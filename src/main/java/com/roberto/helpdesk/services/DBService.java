@@ -3,6 +3,7 @@ package com.roberto.helpdesk.services;
 import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.roberto.helpdesk.domain.Chamado;
@@ -27,17 +28,20 @@ public class DBService {
 	@Autowired
 	private ChamadoRepository chamadoRepository;
 
+	@Autowired
+	private BCryptPasswordEncoder encoder;
+	
 	public void instanciaDB() {
-		Tecnico tec1 = new Tecnico(null, "Juliander", "829.711.280-24", "juliander@mail.com", "123");
-		Tecnico tec2 = new Tecnico(null, "Jean Silva", "288.819.120-23", "jean@mail.com", "321");
-		Tecnico tec3 = new Tecnico(null, "Roberto Bruno", "987.848.760-18", "roberto@mail.com", "231");
+		Tecnico tec1 = new Tecnico(null, "Juliander", "829.711.280-24", "juliander@mail.com", encoder.encode("123"));
+		Tecnico tec2 = new Tecnico(null, "Jean Silva", "288.819.120-23", "jean@mail.com", encoder.encode("321"));
+		Tecnico tec3 = new Tecnico(null, "Roberto Bruno", "987.848.760-18", "roberto@mail.com", encoder.encode("231"));
 		tec3.addPerfil(Perfil.ADMIN);
 		tec2.addPerfil(Perfil.TECNICO);
 		tec1.addPerfil(Perfil.TECNICO);
 
-		Cliente cli1 = new Cliente(null, "Andreia", "723.708.280-99", "andreia@mail.com", "987");
-		Cliente cli2 = new Cliente(null, "Ettore", "594.949.510-18", "ettore@mail.com", "789");
-		Cliente cli3 = new Cliente(null, "Issao", "243.979.900-93", "issao@mail.com", "897");
+		Cliente cli1 = new Cliente(null, "Andreia", "723.708.280-99", "andreia@mail.com", encoder.encode("987"));
+		Cliente cli2 = new Cliente(null, "Ettore", "594.949.510-18", "ettore@mail.com", encoder.encode("789"));
+		Cliente cli3 = new Cliente(null, "Issao", "243.979.900-93", "issao@mail.com", encoder.encode("897"));
 
 		Chamado cha1 = new Chamado(null, Prioridade.BAIXA, Status.ABERTO, "Chamado 01", "Primeiro chamado", tec3, cli2);
 		Chamado cha2 = new Chamado(null, Prioridade.MEDIA, Status.ENCERRADO, "Chamado 02", "Segundo chamado", tec2, cli2);
